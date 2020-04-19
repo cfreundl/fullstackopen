@@ -1,0 +1,17 @@
+title Fullstack open exercise 0.6
+
+note over browser:
+user enters note and clicks "Save" button
+end note
+
+note over browser:
+JS submit handler is executed:
+- new note is added locally
+- notes are re-rendered
+- new note is sent to server
+end note
+
+browser->server: HTTP POST https://fullstack-exampleapp.herokuapp.com/new_note_spa
+browser-->server: [{"content":"another_note","date":"2020-04-19T15:00:00.630Z"}]
+server-->browser: HTTP status code 201
+server-->browser: [{"message":"note created"}]

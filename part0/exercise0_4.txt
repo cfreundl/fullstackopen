@@ -1,0 +1,40 @@
+title Fullstack open exercise 0.4
+
+note over browser:
+user enters note and clicks "Save" button
+end note
+
+browser->server: HTTP POST https://fullstack-exampleapp.herokuapp.com/new_note
+browser-->server: Form data "note=new_note_text"
+
+note over server:
+server stores submitted note
+end note
+
+server-->browser: HTTP status code 302 -> redirect to "/notes"
+
+note left of browser:
+from this point the sequence is
+(apart from the changed notes)
+identical to when "/notes" was retrieved initially
+end note
+
+browser->server: HTTP GET https://fullstack-exampleapp.herokuapp.com/notes
+server-->browser: HTML-code
+browser->server: HTTP GET https://fullstack-exampleapp.herokuapp.com/main.css
+server-->browser: main.css
+browser->server: HTTP GET https://fullstack-exampleapp.herokuapp.com/main.js
+server-->browser: main.js
+
+note over browser:
+browser starts executing js-code
+that requests JSON data from server 
+end note
+
+browser->server: HTTP GET https://fullstack-exampleapp.herokuapp.com/data.json
+server-->browser: [..., { content: "new_note_text", date: "2020-04-19" }]
+
+note over browser:
+browser executes the event handler
+that renders notes to display
+end note
