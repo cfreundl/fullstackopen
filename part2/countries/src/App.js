@@ -26,7 +26,7 @@ const CountryDetails = ({ country }) => (
   </div>
 )
 
-const Countries = ({ countries, filterText }) => {
+const Countries = ({ countries, filterText, setFilterText }) => {
   const filterCaseInsensitiveBy = (searchFor) => (
     (country) => country.name.toLowerCase()
       .includes(searchFor.toLowerCase())
@@ -34,7 +34,7 @@ const Countries = ({ countries, filterText }) => {
 
   const filteredCountries =
     countries.filter(filterCaseInsensitiveBy(filterText))
-    
+
   if (filteredCountries.length > 10) {
     return (
       <div>Too many matches, specify another filter</div>
@@ -52,7 +52,10 @@ const Countries = ({ countries, filterText }) => {
   return (
     <div>
       {filteredCountries.map((country, index) =>
-        <div key={index}>{country.name}</div>
+        <div key={index}>
+          {country.name}
+          <button onClick={() => setFilterText(country.name)}>show</button>
+        </div>
       )}
     </div>
   )
@@ -83,6 +86,7 @@ const App = () => {
       <Countries
         countries={countries}
         filterText={filterText}
+        setFilterText={setFilterText}
       />
     </div>
   );
