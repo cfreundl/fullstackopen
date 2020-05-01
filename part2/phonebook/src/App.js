@@ -1,14 +1,17 @@
 import React, { useState, useEffect } from 'react'
+import Notification from './Notification'
 import Filter from './Filter'
 import PersonForm from './PersonForm'
 import Persons from './Persons'
 import phonebookService from './services/phonebook'
+import './App.css'
 
 const App = () => {
   const [persons, setPersons] = useState([])
   const [newName, setNewName] = useState('')
   const [newNumber, setNewNumber] = useState('')
   const [filterText, setFilterText] = useState('')
+  const [message, setMessage] = useState(null)
 
   useEffect(() => {
     phonebookService
@@ -30,6 +33,13 @@ const App = () => {
     setFilterText(event.target.value)
   }
 
+  const displayTemporaryMessage = message => {
+    setMessage(message)
+    setTimeout(() => {
+      setMessage(null)
+    }, 5000)
+  }
+
   const addName = (event) => {
     event.preventDefault()
     const entry = persons.find((entry) => entry.name === newName)
@@ -40,6 +50,7 @@ const App = () => {
         phonebookService
           .change(entry.id, changedEntry)
           .then(changedEntry => {
+            displayTemporaryMessage(`Changed ${changedEntry.name}`)
             setPersons(persons.map(entry =>
               (entry.id !== changedEntry.id ? entry : changedEntry)))
             setNewName('')
@@ -56,6 +67,7 @@ const App = () => {
       phonebookService
         .add(nameObject)
         .then(newEntry => {
+          displayTemporaryMessage(`Added ${newEntry.name}`)
           setPersons(persons.concat(newEntry))
           setNewName('')
           setNewNumber('')
@@ -68,6 +80,7 @@ const App = () => {
       phonebookService
         .remove(id)
         .then(response => {
+          displayTemporaryMessage(`Deleted ${name}`)
           setPersons(persons.filter((person) => person.id !== id))
         })
     }
@@ -76,6 +89,7 @@ const App = () => {
   return (
     <div>
       <h2>Phonebook</h2>
+      <Notification message={message} />
       <Filter
         filterText={filterText}
         handleFilterTextChange={handleFilterTextChange}
