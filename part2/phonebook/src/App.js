@@ -33,7 +33,8 @@ const App = () => {
     setFilterText(event.target.value)
   }
 
-  const displayTemporaryMessage = message => {
+  const displayTemporaryMessage = (messageText, isError = false) => {
+    const message = { text: messageText, isError: isError }
     setMessage(message)
     setTimeout(() => {
       setMessage(null)
@@ -56,7 +57,11 @@ const App = () => {
             setNewName('')
             setNewNumber('')
           })
-      }
+          .catch(error => {
+            displayTemporaryMessage(`Information of ${entry.name} has already been removed from server`, true)
+            setPersons(persons.filter((person) => person.id !== entry.id))
+          })
+        }
     }
     else {
       const nameObject = {

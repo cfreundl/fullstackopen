@@ -5,9 +5,10 @@ const Notification = ({ message }) => {
       return null
     }
   
+    const messageClass = message.isError ? 'error' : 'info'
     return (
-      <div className="info">
-        {message}
+      <div className={messageClass}>
+        {message.text}
       </div>
     )
   }
